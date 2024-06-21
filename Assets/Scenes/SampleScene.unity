@@ -354,9 +354,9 @@ GameObject:
   m_Component:
   - component: {fileID: 752137059}
   - component: {fileID: 752137058}
-  - component: {fileID: 752137057}
   - component: {fileID: 752137061}
   - component: {fileID: 752137060}
+  - component: {fileID: 752137057}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -377,11 +377,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 250
-  JumpForce: 10
+  JumpForce: 15
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 128
-  JumpRadius: 0.25
+  JumpRadius: 0.2
   GroundCheckPos: {fileID: 2065547936}
 --- !u!212 &752137058
 SpriteRenderer:
@@ -511,7 +511,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
