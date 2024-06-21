@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public float JumpRadius;
     bool IsGrounded;
 
-    public Transform groundCheckPos;
+    public Transform GroundCheckPos;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround);
+        IsGrounded = Physics2D.OverlapCircle(GroundCheckPos.position, JumpRadius, WhatIsGround);
         float xInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y);
 
