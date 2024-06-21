@@ -8,8 +8,13 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb;
     public float Speed;
-
     bool isFacingLeft;
+    public float JumpForce;
+    public LayerMask WhatIsGround;
+    public float JumpRadius;
+    bool IsGrounded;
+
+    public Transform groundCheckPos;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -17,21 +22,29 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround);
         float xInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y);
 
         if (xInput > 0 && isFacingLeft == true)
         {
-            isFacingLeft = !isFacingLeft;
-            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
-            // Flip the player
+            Flip();
         }
         else if (xInput < 0 && isFacingLeft == false)
         {
-            // Flip the player
-            isFacingLeft = !isFacingLeft;
-            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+            Flip();
         }
+
+        if (IsGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.velocity = Vector2.up * JumpForce;
+        }
+    }
+
+    void Flip()
+    {
+        isFacingLeft = !isFacingLeft;
+        transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
     }
 }
