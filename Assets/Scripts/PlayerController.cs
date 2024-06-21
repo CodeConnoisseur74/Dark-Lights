@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -46,5 +47,10 @@ public class PlayerController : MonoBehaviour
     {
         isFacingLeft = !isFacingLeft;
         transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawSphere(GroundCheckPos.position, JumpRadius);
     }
 }
