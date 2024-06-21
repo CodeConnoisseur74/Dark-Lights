@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
         IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround);
         float xInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y);
