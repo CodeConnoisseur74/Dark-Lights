@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        canDash = true;
+        // tr.emitting = false;
     }
 
     // Update is called once per frame
@@ -91,7 +93,7 @@ public class PlayerController : MonoBehaviour
             // dash
             isDashing = true;
             canDash = false;
-            StartCoroutine(stopDash());
+            StartCoroutine(StopDash());
         }
 
         if (isDashing)
@@ -103,8 +105,9 @@ public class PlayerController : MonoBehaviour
                 // dashDir = Mathf.Clamp(transform.localScale.x, -1, 1);
             }
             rb.velocity = new Vector2(dashDir * DashForce, rb.velocity.y) * Time.deltaTime;
+            // tr.emitting = true;
         }
-        
+
         #endregion
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -119,11 +122,12 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
     }
 
-    IEnumerator stopDash()
+    IEnumerator StopDash()
     {
         yield return new WaitForSeconds(waitTimeDash);
         canDash = true;
         isDashing = false;
+        // tr.emitting = false;
     }
 
     private void OnDrawGizmosSelected()
