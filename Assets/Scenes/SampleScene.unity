@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 752137061}
   - component: {fileID: 752137060}
   - component: {fileID: 752137057}
+  - component: {fileID: 752137062}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -376,13 +377,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49285370106080152a62cab6cd0abb1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 250
+  Speed: 300
   JumpForce: 15
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 128
   JumpRadius: 0.2
   GroundCheckPos: {fileID: 2065547936}
+  JumpAmount: 1
 --- !u!212 &752137058
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -445,7 +447,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.023, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.74, y: 0.74, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2065547936}
@@ -523,6 +525,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &752137062
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752137056}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fb4ad0deb900746efa48d2fae4e16c2d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2065547935
 GameObject:
   m_ObjectHideFlags: 0
