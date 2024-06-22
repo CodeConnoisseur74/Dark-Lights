@@ -12,6 +12,11 @@ public class PlayerController : MonoBehaviour
     public float Speed = 50;
     bool isFacingLeft;
     Animator anim;
+
+    bool canDash, isDashing;
+    float dashDir;
+    public float DashForce;
+
     public float JumpForce;
     public LayerMask WhatIsGround;
     public float JumpRadius;
@@ -20,6 +25,8 @@ public class PlayerController : MonoBehaviour
     public Transform GroundCheckPos;
     public int JumpAmount;
     int JumpCounter;
+    public float waitTimeDash;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -78,6 +85,28 @@ public class PlayerController : MonoBehaviour
 
         #endregion
 
+        #region dash
+        if (Input.GetKeyDown(KeyCode.Q) && canDash)
+        {
+            // dash
+            isDashing = true;
+            canDash = false;
+            StartCoroutine(stopDash());
+        }
+
+        if (isDashing)
+        {
+            dashDir = Input.GetAxisRaw("Horizontal");
+            if (dashDir == 0)
+            {
+                dashDir = transform.localScale.x;
+                // dashDir = Mathf.Clamp(transform.localScale.x, -1, 1);
+            }
+            rb.velocity = new Vector2(dashDir * DashForce, rb.velocity.y) * Time.deltaTime;
+        }
+        
+        #endregion
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -88,6 +117,13 @@ public class PlayerController : MonoBehaviour
     {
         isFacingLeft = !isFacingLeft;
         transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+    }
+
+    IEnumerator stopDash()
+    {
+        yield return new WaitForSeconds(waitTimeDash);
+        canDash = true;
+        isDashing = false;
     }
 
     private void OnDrawGizmosSelected()

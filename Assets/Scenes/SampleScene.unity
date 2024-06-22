@@ -378,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 300
+  DashForce: 2000
   JumpForce: 15
   WhatIsGround:
     serializedVersion: 2
@@ -385,6 +386,7 @@ MonoBehaviour:
   JumpRadius: 0.2
   GroundCheckPos: {fileID: 2065547936}
   JumpAmount: 1
+  waitTimeDash: 0.12
 --- !u!212 &752137058
 SpriteRenderer:
   m_ObjectHideFlags: 0
