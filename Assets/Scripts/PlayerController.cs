@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            JumpCounter = JumpAmount; 
+            JumpCounter = JumpAmount;
             dashCounter = DashAmount;
         }
 
