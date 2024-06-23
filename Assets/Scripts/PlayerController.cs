@@ -10,13 +10,16 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb;
     public float Speed = 50;
+
     bool isFacingLeft;
     Animator anim;
+    TrailRenderer tr;
 
     bool canDash, isDashing;
     float dashDir;
     public float DashForce;
 
+    #region Jump
     public float JumpForce;
     public LayerMask WhatIsGround;
     public float JumpRadius;
@@ -25,14 +28,22 @@ public class PlayerController : MonoBehaviour
     public Transform GroundCheckPos;
     public int JumpAmount;
     int JumpCounter;
+    #endregion
+
+    #region dash
     public float waitTimeDash;
+    public int DashAmount;
+    int dashCounter;
+    #endregion
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        tr = GetComponent<TrailRenderer>();
         canDash = true;
-        // tr.emitting = false;
+        tr.emitting = false;
+        dashCounter = DashAmount;
     }
 
     // Update is called once per frame
@@ -58,7 +69,8 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            JumpCounter = JumpAmount;
+            JumpCounter = JumpAmount; 
+            dashCounter = DashAmount;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && JumpCounter > 0)
@@ -88,11 +100,13 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         #region dash
-        if (Input.GetKeyDown(KeyCode.Q) && canDash)
+        if (Input.GetKeyDown(KeyCode.Q) && canDash && dashCounter > 0)
         {
             // dash
+            dashCounter--;
             isDashing = true;
             canDash = false;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
             StartCoroutine(StopDash());
         }
 
@@ -102,10 +116,9 @@ public class PlayerController : MonoBehaviour
             if (dashDir == 0)
             {
                 dashDir = transform.localScale.x;
-                // dashDir = Mathf.Clamp(transform.localScale.x, -1, 1);
             }
             rb.velocity = new Vector2(dashDir * DashForce, rb.velocity.y) * Time.deltaTime;
-            // tr.emitting = true;
+            tr.emitting = true;
         }
 
         #endregion
@@ -125,9 +138,10 @@ public class PlayerController : MonoBehaviour
     IEnumerator StopDash()
     {
         yield return new WaitForSeconds(waitTimeDash);
+        rb.constraints = ~RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
         canDash = true;
         isDashing = false;
-        // tr.emitting = false;
+        tr.emitting = false;
     }
 
     private void OnDrawGizmosSelected()

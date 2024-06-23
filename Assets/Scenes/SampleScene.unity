@@ -388,6 +388,7 @@ MonoBehaviour:
   GroundCheckPos: {fileID: 2065547936}
   JumpAmount: 1
   waitTimeDash: 0.12
+  DashAmount: 1
 --- !u!212 &752137058
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -449,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 752137056}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03, y: 0.48, z: 0}
+  m_LocalPosition: {x: 0.02, y: 0.18, z: 0}
   m_LocalScale: {x: 0.74, y: 0.74, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
