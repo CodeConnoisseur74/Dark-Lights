@@ -36,6 +36,32 @@ public class PlayerController : MonoBehaviour
     int dashCounter;
     #endregion
 
+    float xInput;
+
+    #region Wall Jump
+
+    bool canGrab;
+    bool isGrabbing;
+    public float WallJumpRadius;
+    public Transform WallJumpCheckPos;
+
+    float initalGravityScale;
+    public float WallJumpGravity;
+
+    public float wallJumpForceX, wallJumpForceY;
+
+    //Timer
+    public float startWallJumpTimer;
+    float wallJumpTimer;
+
+    // float clampedScaleAlt;
+    float scaleX;
+    #endregion
+
+    // public GameObject DeathEffect;
+
+    // public Collectables pauseScript;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -44,14 +70,29 @@ public class PlayerController : MonoBehaviour
         canDash = true;
         tr.emitting = false;
         dashCounter = DashAmount;
+
+        initalGravityScale = rb.gravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
         #region Movement
-        float xInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y);
+        // if (!pauseScript.paused)
+        // {
+        if (wallJumpTimer <= 0)
+        {
+            if (!isDashing)
+            {
+                xInput = Input.GetAxisRaw("Horizontal");
+                rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y);
+            }
+        }
+        else
+        {
+            wallJumpTimer -= Time.deltaTime;
+        }
+
 
         if (xInput > 0 && isFacingLeft == true)
         {
@@ -61,6 +102,7 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
+        // }
 
         #endregion
 
@@ -103,6 +145,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && canDash && dashCounter > 0)
         {
             // dash
+            dashDir = Input.GetAxisRaw("Horizontal");
             dashCounter--;
             isDashing = true;
             canDash = false;
@@ -112,7 +155,6 @@ public class PlayerController : MonoBehaviour
 
         if (isDashing)
         {
-            dashDir = Input.GetAxisRaw("Horizontal");
             if (dashDir == 0)
             {
                 dashDir = transform.localScale.x;
@@ -123,11 +165,42 @@ public class PlayerController : MonoBehaviour
 
         #endregion
 
-        if (Input.GetKeyDown(KeyCode.R))
+        #region wallJump
+        canGrab = Physics2D.OverlapCircle(WallJumpCheckPos.position, WallJumpRadius, WhatIsGround);
+
+
+        isGrabbing = false;
+        if (!isGrounded && canGrab)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            scaleX = transform.localScale.x;
+            if ((scaleX > 0 && xInput > 0) || (scaleX < 0 && xInput < 0))
+            {
+                isGrabbing = true;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    wallJumpTimer = startWallJumpTimer;
+                    rb.velocity = new Vector2(-xInput * wallJumpForceX * Time.deltaTime, wallJumpForceY * Time.deltaTime);
+                    rb.gravityScale = initalGravityScale;
+                    isGrabbing = false;
+
+                }
+
+            }
+        }
+
+        if (isGrabbing)
+        {
+            rb.gravityScale = WallJumpGravity;
+            rb.velocity = Vector2.zero;
+
+        }
+        else
+        {
+            rb.gravityScale = initalGravityScale;
         }
     }
+
+    #endregion
 
     void Flip()
     {
@@ -147,6 +220,7 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawSphere(GroundCheckPos.position, JumpRadius);
+        Gizmos.DrawSphere(WallJumpCheckPos.position, WallJumpRadius);
     }
 
 
