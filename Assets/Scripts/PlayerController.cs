@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public float JumpForce;
     public LayerMask WhatIsGround;
     public float JumpRadius;
-    bool IsGrounded;
+    bool isGrounded;
 
     public Transform GroundCheckPos;
     public int JumpAmount;
@@ -54,9 +54,9 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         #region Jump
-        IsGrounded = Physics2D.OverlapCircle(GroundCheckPos.position, JumpRadius, WhatIsGround);
+        isGrounded = Physics2D.OverlapCircle(GroundCheckPos.position, JumpRadius, WhatIsGround);
 
-        if (IsGrounded)
+        if (isGrounded)
         {
             JumpCounter = JumpAmount;
         }
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && JumpCounter > 0)
         {
             rb.velocity = Vector2.up * JumpForce;
-            if (!IsGrounded)
+            if (!isGrounded)
             {
                 JumpCounter--;
             }
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isWalking", false);
         }
 
-        anim.SetBool("hasJumped", !IsGrounded);
+        anim.SetBool("hasJumped", !isGrounded);
 
         #endregion
 
